@@ -2,5 +2,6 @@
 # define SO_LONG_H
 
 #include "minilibx-linux/mlx.h"
+#include <stdio.h>
 
 #endif
