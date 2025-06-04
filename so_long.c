@@ -1,15 +1,5 @@
 #include "so_long.h"
 
-/*void draw_square(void *mlx, void *window, int start_x, int start_y, int color)
-{
-    for (int x = start_x; x < start_x + 64; x++) {
-        for (int y = start_y; y < start_y + 64; y++) {
-            mlx_pixel_put(mlx, window, x, y, color);
-        }
-    }
-}*/
-
-
 int	count_lines(char *buffer)
 {
 	int	i;
@@ -21,45 +11,68 @@ int	count_lines(char *buffer)
 		if (buffer[i] == '\n')
 			lines++;
 		i++;
-		if (buffer[i] == '\0')
-			lines++;
 	}
+    if (i > 0 && buffer[i - 1] != '\n')
+        lines++;
 	return (lines);
 }
 
 int count_rows(char *buff)
 {
-	//int rows = 0;
-	int i;
-
-	i = 0;
-	while (buff[i] != '\n')
-	{
-		i++;
-	}
-	if (buff[i] == '\n')
-		i--;
-	return (i);
+    int i = 0;
+    while (buff[i] != '\n' && buff[i] != '\0')
+        i++;
+    return i;
 }
 
 char **Allocate_map_in_mem(char *buffer, int lines, int rows)
 {
-	int i;
 	char **map;
 	int line_counter;
 
 	line_counter = 0;
-	i = 0;
+	map = malloc(sizeof(char *) * lines);
+	if (!map)
+		return (NULL);
 	while (line_counter < lines)
 	{
-		if (buffer[i] == '\n')
+		if (*buffer == '\n' || *buffer == '\0')
 		{
-			map[line_counter] = malloc(sizeof(char) * rows);
+			map[line_counter] = malloc(sizeof(char) * (rows + 2));
+			if (!map[line_counter])
+				return (NULL);
 			line_counter++;
 		}
-		i++;
+		if (*buffer == '\0')
+			break;
+		buffer++;
 	}
 	return map;
+}
+
+void    Filling_up_an_allocated(char *buffer, char **allocated, int lines, int rows)
+{
+  int lines_counter;
+  int rows_counter;
+  
+  lines_counter = 0;
+  rows_counter = 0;
+  while(lines_counter < lines)
+  {
+    while (rows_counter < rows)
+    {
+      allocated[lines_counter][rows_counter] = *buffer;
+	  if (*buffer == '\0')
+		break;
+      buffer++;
+      rows_counter++;
+    }
+	if (*buffer == '\n')
+        allocated[lines_counter][rows_counter++] = *buffer++;
+	allocated[lines_counter][rows_counter] = '\0';
+    rows_counter = 0;
+    lines_counter++;
+}
 }
 
 int main(void)
@@ -80,8 +93,12 @@ int main(void)
 	rows = count_rows(buffer);
 	printf("%d\n%d\n", lines, rows);
 
-	//STOCKING THE MAP IN A 2D ARRAY
+	//ALLOCATING THE MAP IN A 2D ARRAY
 	map = Allocate_map_in_mem(buffer, lines, rows);
+	
+	//FILLING UP THE 2D ARRAY
+	Filling_up_an_allocated(buffer, map, lines, rows);
+
 
 	int yah, yah1;
 	//creating connection identifier
