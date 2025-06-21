@@ -15,8 +15,12 @@ char	*get_next_line(int fd);
 char	*ft_strdup(const char *str);
 char	*strcopy(const char *src, int dstlen);
 int	ft_strlen(const char *str);
+int	is_map_rectangulaire(char **map);
+int	fd_creator(void);
+char **allocate_fill_map();
+int	count_lines(void);
+char *map_into_buffer(void);
 #define BUFFER_SIZE_2 10000
-
 # ifndef FD_SIZE
 #  define FD_SIZE 4096
 # endif

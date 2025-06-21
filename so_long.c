@@ -1,10 +1,13 @@
 #include "so_long.h"
 
-int	count_lines(char *buffer)
+int	count_lines(void)
 {
+	char *buffer;
 	int	i;
-	int	lines = 0;
+	int	lines;
 
+	lines = 0;
+	buffer = map_into_buffer();
 	i = 0;
 	while(buffer[i] != '\0')
 	{
@@ -14,7 +17,30 @@ int	count_lines(char *buffer)
 	}
     if (i > 0 && buffer[i - 1] != '\n')
         lines++;
+	free(buffer);
 	return (lines);
+}
+
+char *map_into_buffer(void)
+{
+    int fd;
+    int bytes_read;
+    char *buffer;
+
+	buffer = malloc(BUFFER_SIZE_2);
+    if (!buffer)
+        return NULL;
+    fd = fd_creator();
+    bytes_read = read(fd, buffer, BUFFER_SIZE_2 - 1);
+    if (bytes_read < 0)
+    {
+        close(fd);
+        free(buffer);
+        exit(1);
+    }
+    buffer[bytes_read] = '\0';
+    close(fd);
+    return buffer;
 }
 
 int count_rows(char *buff)
@@ -25,55 +51,47 @@ int count_rows(char *buff)
     return i;
 }
 
-char **Allocate_map_in_mem(char *buffer, int lines, int rows)
+char	**allocate_fill_map(void)
 {
-	char **map;
-	int line_counter;
+	char	**map;
+	char	*line;
+	int		i;
+	int		fd;
+	int		lines;
 
-	line_counter = 0;
-	map = malloc(sizeof(char *) * lines);
+	fd = fd_creator();
+	lines = count_lines();
+	map = malloc(sizeof(char *) * (lines + 1));
 	if (!map)
 		return (NULL);
-	while (line_counter < lines)
+	i = 0;
+	line = get_next_line(fd);
+	while (line)
 	{
-		if (*buffer == '\n' || *buffer == '\0')
-		{
-			map[line_counter] = malloc(sizeof(char) * (rows + 2));
-			if (!map[line_counter])
-				return (NULL);
-			line_counter++;
-		}
-		if (*buffer == '\0')
-			break;
-		buffer++;
+		map[i++] = line;
+		line = get_next_line(fd);
 	}
-	return map;
+	map[i] = NULL;
+	close(fd);
+	return (map);
 }
 
-void    Filling_up_an_allocated(char *buffer, char **allocated, int lines, int rows)
+int	fd_creator(void)
 {
-  int lines_counter;
-  int rows_counter;
-  
-  lines_counter = 0;
-  rows_counter = 0;
-  while(lines_counter < lines)
-  {
-    while (rows_counter < rows)
-    {
-      allocated[lines_counter][rows_counter] = *buffer;
-	  if (*buffer == '\0')
-		break;
-      buffer++;
-      rows_counter++;
-    }
-	if (*buffer == '\n')
-        allocated[lines_counter][rows_counter++] = *buffer++;
-	allocated[lines_counter][rows_counter] = '\0';
-    rows_counter = 0;
-    lines_counter++;
-	}
+	int fd;
+
+	fd = open("./maps/simple.ber", O_RDONLY);
+	if (fd < 0)
+    	exit(1);
+	return fd;
 }
+
+/*int	map_c_p_cheker(void)
+{
+	char *buffer;
+
+	buffer = map_into_buffer();
+}*/
 
 int	is_map_rectangulaire(char **map)
 {
@@ -94,7 +112,6 @@ int	is_map_rectangulaire(char **map)
 			}
 			j--;
 		}
-		printf("Line %d: length %d [%s]\n", i, j, map[i]);
 		if (temp != j && temp != -1)
 			return 0;
 		else
@@ -106,47 +123,12 @@ int	is_map_rectangulaire(char **map)
 
 int main(void)
 {
-	int bytes_read;
-	char buffer[BUFFER_SIZE_2]; 
 	char **map;
 	int x = 0, y = 0;
 
-	//OPENING READING THE FILE INTO A BUFFER
-	int fd = open("./maps/simple.ber", O_RDONLY);
-	bytes_read = read(fd, buffer, 10000);
-	buffer[bytes_read] = '\0';
-
-	int lines = count_lines(buffer);
-	close(fd);
-	fd = open("./maps/simple.ber", O_RDONLY);
-
-	map = malloc(sizeof(char *) * (lines + 1));
-	char *line;
-	int i = 0;
-	line = get_next_line(fd);
-	while (line)
-	{
-		map[i] = line;
-		line = get_next_line(fd);
-		i++;
-	}
-	map[i] = NULL;
+	map = allocate_fill_map();
 	int idk = is_map_rectangulaire(map);
-	printf("\n%d", idk);
-	printf("%d", ft_strlen("yahya"));
-	//printf("%s%s", map[0], map[1]);
-
-	//COUNTING THE ROWS AND LINES OF THE MAP
-	//lines = count_lines(buffer);
-	//rows = count_rows(buffer);
-	//printf("%d\n%d\n", lines, rows);
-
-	//ALLOCATING THE MAP IN A 2D ARRAY
-	//map = Allocate_map_in_mem(buffer, lines, rows);
-	
-	//FILLING UP THE 2D ARRAY
-	//Filling_up_an_allocated(buffer, map, lines, rows);
-
+	printf("%d", idk);
 
 	/*int yah, yah1;
 	//creating connection identifier
