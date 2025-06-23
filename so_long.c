@@ -1,13 +1,13 @@
 #include "so_long.h"
 
-int	count_lines(void)
+int	count_lines(char *map_file)
 {
 	char *buffer;
 	int	i;
 	int	lines;
 
 	lines = 0;
-	buffer = map_into_buffer();
+	buffer = map_into_buffer(map_file);
 	i = 0;
 	while(buffer[i] != '\0')
 	{
@@ -15,13 +15,14 @@ int	count_lines(void)
 			lines++;
 		i++;
 	}
-    if (i > 0 && buffer[i - 1] != '\n')
-        lines++;
+	if (i > 0 && buffer[i - 1] != '\n')
+		lines++;
+
 	free(buffer);
 	return (lines);
 }
 
-char *map_into_buffer(void)
+char *map_into_buffer(char *map_file)
 {
     int fd;
     int bytes_read;
@@ -30,7 +31,7 @@ char *map_into_buffer(void)
 	buffer = malloc(BUFFER_SIZE_2);
     if (!buffer)
         return NULL;
-    fd = fd_creator();
+    fd = fd_creator(map_file);
     bytes_read = read(fd, buffer, BUFFER_SIZE_2 - 1);
     if (bytes_read < 0)
     {
@@ -43,15 +44,15 @@ char *map_into_buffer(void)
     return buffer;
 }
 
-int count_rows(char *buff)
+int count_width(char **buff)
 {
     int i = 0;
-    while (buff[i] != '\n' && buff[i] != '\0')
+    while (buff[0][i] != '\r' && buff[0][i] != '\n' && buff[0][i] != '\0')
         i++;
     return i;
 }
 
-char	**allocate_fill_map(void)
+char	**allocate_fill_map(char *map_file)
 {
 	char	**map;
 	char	*line;
@@ -59,8 +60,8 @@ char	**allocate_fill_map(void)
 	int		fd;
 	int		lines;
 
-	fd = fd_creator();
-	lines = count_lines();
+	fd = fd_creator(map_file);
+	lines = count_lines(map_file);
 	map = malloc(sizeof(char *) * (lines + 1));
 	if (!map)
 		return (NULL);
@@ -76,24 +77,17 @@ char	**allocate_fill_map(void)
 	return (map);
 }
 
-int	fd_creator(void)
+int	fd_creator(char *map_file)
 {
 	int fd;
 
-	fd = open("./maps/simple.ber", O_RDONLY);
+	fd = open(map_file, O_RDONLY);
 	if (fd < 0)
     	exit(1);
 	return fd;
 }
 
-/*int	map_c_p_cheker(void)
-{
-	char *buffer;
-
-	buffer = map_into_buffer();
-}*/
-
-int	is_map_rectangulaire(char **map)
+int	check_map_rectangulaire(char **map)
 {
 	int i;
 	int j;
@@ -121,37 +115,174 @@ int	is_map_rectangulaire(char **map)
 	return 1;
 }
 
-int main(void)
+int	check_map_walls(char **map, int lines, int width)
 {
-	char **map;
-	int x = 0, y = 0;
+	int j;
 
-	map = allocate_fill_map();
-	int idk = is_map_rectangulaire(map);
-	printf("%d", idk);
-
-	/*int yah, yah1;
-	//creating connection identifier
-    void *mlx = mlx_init();
-	//setting up the window
-    void *Window = mlx_new_window(mlx, 1500, 1000, "PACMANNNN");
-	while(x < 64)
+	j = 0;
+	while (map[0][j] != '\0' && map[0][j] != '\r' && map[0][j] != '\n')
 	{
-		mlx_pixel_put(mlx, Window, x, 64, 0xFF0000);
-		while(y<64)
-		{
-			mlx_pixel_put(mlx, Window, 64, y, 0xFF0000); 
-			y++;
-		}
-		x++;
+		if (map[0][j] != '1')
+			return (0);
+		j++;
 	}
-    //create an image
-	void *img = mlx_xpm_file_to_image(mlx, "./sprites/aight_resized.xpm", &yah, &yah1);
-	mlx_put_image_to_window(mlx, Window, img, 64, 64);
-	//putting the image in window
-	//mlx_put_image_to_window(con_iden, Window, img, 0, 0);
-	// Window stays open
-    mlx_loop(mlx);
-	close(fd);*/
+	j = 0;
+	while (map[lines - 1][j] != '\0' && map[lines - 1][j] != '\r' && map[lines - 1][j] != '\n')
+	{
+		if (map[lines - 1][j] != '1')
+			return (0);
+		j++;
+	}
+	if (check_middle_lines(map, lines, width) == 0)
+		return (0);
+	else
+		return (1);
+}
+
+int check_player(char **map, int lines)
+{
+	int i;
+	int player;
+	int j;
+
+	i = 0;
+	player = 0;
+	while (i < lines)
+	{
+		j = 0;
+		while (map[i][j] != '\n' && map[i][j] != '\0' && map[i][j] != '\r')
+		{
+			if (map[i][j] == 'P')
+				player++;
+			j++;
+		}
+		i++;
+	}
+	if (player != 1)
+		return (0);
+	else
+		return (1);
+}
+
+int check_exit(char **map, int lines)
+{
+	int i;
+	int exit;
+	int j;
+
+	i = 0;
+	exit = 0;
+	while (i < lines)
+	{
+		j = 0;
+		while (map[i][j] != '\n' && map[i][j] != '\0' && map[i][j] != '\r')
+		{
+			if (map[i][j] == 'E')
+				exit++;
+			j++;
+		}
+		i++;
+	}
+	if (exit != 1)
+		return (0);
+	else
+		return (1);
+}
+
+int check_collectibles(char **map, int lines)
+{
+	int i;
+	int collectibles;
+	int j;
+
+	i = 0;
+	collectibles = 0;
+	while (i < lines)
+	{
+		j = 0;
+		while (map[i][j] != '\n' && map[i][j] != '\0' && map[i][j] != '\r')
+		{
+			if (map[i][j] == 'C')
+				collectibles++;
+			j++;
+		}
+		i++;
+	}
+	if (collectibles < 1)
+		return (0);
+	else
+		return (1);
+}
+
+int check_map_elements(char **map, int lines)
+{
+	if (check_player(map, lines) == 0)
+		return (0);
+	else if (check_exit(map, lines) == 0)
+		return (0);
+	else if (check_collectibles(map, lines) == 0)
+		return (0);
+	else
+		return (1);
+}
+
+int	check_middle_lines(char **map, int lines, int width)
+{
+	int i;
+
+	i = 1;
+	while (i < (lines - 1))
+	{
+		if (map[i][0] != '1' || map[i][width - 1] != '1')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int check_invalid_char(char **map, int lines)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < lines)
+	{
+		j = 0;
+		while (map[i][j] != '\n' && map[i][j] != '\0' && map[i][j] != '\r')
+		{
+			if (map[i][j] != 'E' && map[i][j] != 'C' && map[i][j] != '1' && map[i][j] != 'P' && map[i][j] != '0')
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	is_map_valid(char **map, int lines, int width)
+{
+	if (check_map_rectangulaire(map)== 0)
+		return (0);
+	else if (check_map_walls(map, lines, width) == 0)
+		return(0);
+	else if (check_map_elements(map, lines) == 0)
+		return (0);
+	else if (check_invalid_char(map, lines) == 0)
+		return (0);
+	else
+		return (1);
+}
+
+int main(int argc, char **argv)
+{
+	t_game game;
+	
+
+	game.map = allocate_fill_map(argv[1]);
+	game.lines = count_lines(argv[1]);
+	game.width = count_width(game.map);
+
+	printf("is map valid : %d\n", is_map_valid(game.map, game.lines, game.width));
     return (0);
 }
