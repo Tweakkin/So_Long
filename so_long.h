@@ -28,6 +28,7 @@ int check_player(char **map, int lines);
 int check_collectibles(char **map, int lines);
 int check_invalid_char(char **map, int lines);
 int	is_map_valid(char **map, int lines, int width);
+int check_map_elements(char **map, int lines);
 
 #define BUFFER_SIZE_2 10000
 # ifndef FD_SIZE
