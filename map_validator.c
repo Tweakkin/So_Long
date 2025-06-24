@@ -1,14 +1,14 @@
 #include "so_long.h"
 
-int	is_map_valid(char **map, int lines, int width)
+int	is_map_valid(t_game *game)
 {
-	if (check_map_rectangulaire(map)== 0)
+	if (check_map_rectangulaire(game->map)== 0)
 		return (0);
-	else if (check_map_walls(map, lines, width) == 0)
+	else if (check_map_walls(game->map, game->lines, game->width) == 0)
 		return(0);
-	else if (check_map_elements(map, lines) == 0)
+	else if (check_map_elements(game->map, game->lines) == 0)
 		return (0);
-	else if (check_invalid_char(map, lines) == 0)
+	else if (check_invalid_char(game->map, game->lines) == 0)
 		return (0);
 	else
 		return (1);
