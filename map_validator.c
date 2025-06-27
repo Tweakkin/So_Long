@@ -1,20 +1,19 @@
 #include "so_long.h"
 
-int	is_map_valid(t_game *game)
+void	is_map_valid(t_game *game)
 {
-	if (check_map_rectangulaire(game->map)== 0)
-		return (0);
+	if (check_filename(game->filename) == 0)
+		exit_error(game, "Error: invalid file name or extension");
+	else if (check_map_rectangular(game->map)== 0)
+		exit_error(game, "Error: map is not rectangular");
 	else if (check_map_walls(game->map, game->lines, game->width) == 0)
-		return(0);
-	else if (check_map_elements(game->map, game->lines) == 0)
-		return (0);
+		exit_error(game, "Error: map must be surrounded by walls");
 	else if (check_invalid_char(game->map, game->lines) == 0)
-		return (0);
-	else
-		return (1);
+		exit_error(game, "Error: map contains invalid characters");
+	check_map_elements(game, game->map, game->lines);
 }
 
-int	check_map_rectangulaire(char **map)
+int	check_map_rectangular(char **map)
 {
 	int i;
 	int j;
@@ -66,16 +65,14 @@ int	check_map_walls(char **map, int lines, int width)
 		return (1);
 }
 
-int check_map_elements(char **map, int lines)
+void check_map_elements(t_game *game, char **map, int lines)
 {
 	if (check_player(map, lines) == 0)
-		return (0);
+		exit_error(game, "Error: map must contain exactly one player (P)");
 	else if (check_exit(map, lines) == 0)
-		return (0);
+		exit_error(game, "Error: map must contain exactly one exit (E)");
 	else if (check_collectibles(map, lines) == 0)
-		return (0);
-	else
-		return (1);
+		exit_error(game, "Error: map must contain at least one collectible (C)");
 }
 
 int check_invalid_char(char **map, int lines)

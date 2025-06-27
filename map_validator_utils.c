@@ -88,3 +88,14 @@ int check_player(char **map, int lines)
 	else
 		return (1);
 }
+
+int	check_filename(char *filename)
+{
+	int filelen = ft_strlen(filename);
+	
+	if (filelen < 5)
+		return (0);
+	if (filename[filelen - 4] == '.' && filename[filelen - 3] == 'b' && filename[filelen - 2] == 'e' && filename[filelen - 1] == 'r')
+		return (1);
+	return (0);
+}
