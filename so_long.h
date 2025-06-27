@@ -12,6 +12,7 @@ typedef struct s_game
 	char **map;
 	int lines;
 	int width;
+	char *filename;
 }t_game;
 
 # ifndef BUFFER_SIZE
@@ -22,7 +23,7 @@ char	*get_next_line(int fd);
 char	*ft_strdup(const char *str);
 char	*strcopy(const char *src, int dstlen);
 int	ft_strlen(const char *str);
-int	check_map_rectangulaire(char **map);
+int	check_map_rectangular(char **map);
 int	fd_creator(char *map_file);
 char	**allocate_fill_map(char *map_file);
 char *map_into_buffer(char *map_file);
@@ -35,9 +36,13 @@ int check_exit(char **map, int lines);
 int check_player(char **map, int lines);
 int check_collectibles(char **map, int lines);
 int check_invalid_char(char **map, int lines);
-int	is_map_valid(t_game *game);
-int check_map_elements(char **map, int lines);
+void	is_map_valid(t_game *game);
+void check_map_elements(t_game *game, char **map, int lines);
 char	**allocate_fill_map(char *map_file);
+int	check_filename(char *filename);
+void	init_game_data(t_game *game, char *filepath);
+void	ft_putstr(char *s);
+void exit_error(t_game *game, char *msg);
 
 #define BUFFER_SIZE_2 10000
 # ifndef FD_SIZE
