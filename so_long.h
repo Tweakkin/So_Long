@@ -13,6 +13,8 @@ typedef struct s_game
 	int lines;
 	int width;
 	char *filename;
+	int	x_player;
+	int y_player;
 }t_game;
 
 # ifndef BUFFER_SIZE
@@ -43,6 +45,12 @@ int	check_filename(char *filename);
 void	init_game_data(t_game *game, char *filepath);
 void	ft_putstr(char *s);
 void exit_error(t_game *game, char *msg);
+char	*ft_strcpy(char *dest, const char *src);
+char **copy_map(char **src, int lines, int width);
+int	check_valid_path(t_game *game);
+void	find_player(t_game *game, char **map);
+void	floodfill(char **map, int x, int y);
+int	is_path_reachable(char **map, int lines, int width);
 
 #define BUFFER_SIZE_2 10000
 # ifndef FD_SIZE

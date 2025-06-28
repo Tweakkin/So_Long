@@ -3,14 +3,16 @@
 void	is_map_valid(t_game *game)
 {
 	if (check_filename(game->filename) == 0)
-		exit_error(game, "Error: invalid file name or extension");
-	else if (check_map_rectangular(game->map)== 0)
+		exit_error(game, "Error: invalid file name or extension\n");
+	if (check_map_rectangular(game->map)== 0)
 		exit_error(game, "Error: map is not rectangular");
-	else if (check_map_walls(game->map, game->lines, game->width) == 0)
-		exit_error(game, "Error: map must be surrounded by walls");
-	else if (check_invalid_char(game->map, game->lines) == 0)
-		exit_error(game, "Error: map contains invalid characters");
+	if (check_map_walls(game->map, game->lines, game->width) == 0)
+		exit_error(game, "Error: map must be surrounded by walls\n");
+	if (check_invalid_char(game->map, game->lines) == 0)
+		exit_error(game, "Error: map contains invalid characters\n");
 	check_map_elements(game, game->map, game->lines);
+	if (check_valid_path(game) == 0)
+		exit_error(game, "Error: No valid path\n");
 }
 
 int	check_map_rectangular(char **map)

@@ -12,6 +12,9 @@ int main(int argc, char **argv)
 {
 	t_game game;
 	
+	if (argc != 2) {
+		exit_error(NULL, "Error : not enough arguments");
+	}
 	init_game_data(&game, argv[1]);
 	is_map_valid(&game);
     return (0);
