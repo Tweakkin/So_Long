@@ -54,3 +54,16 @@ void exit_error(t_game *game, char *msg)
 	ft_putstr(msg);
 	exit(1);
 }
+
+char	*ft_strcpy(char *dest, const char *src)
+{
+	int	i = 0;
+
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
