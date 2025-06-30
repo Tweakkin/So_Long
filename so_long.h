@@ -15,6 +15,11 @@ typedef struct s_game
 	char *filename;
 	int	x_player;
 	int y_player;
+	void *mlx;
+	void *mlx_window;
+	void *img_player;
+	int img_width;
+	int img_height;
 }t_game;
 
 # ifndef BUFFER_SIZE
