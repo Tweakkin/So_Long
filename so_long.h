@@ -6,6 +6,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 
 typedef struct s_game
 {
@@ -24,8 +25,9 @@ typedef struct s_game
 	void *img_wall;
 	int img_width;
 	int img_height;
-	int collectibles_count;
+	int collected;
 	int collectibles_num;
+	int moves_counter;
 }t_game;
 
 # ifndef BUFFER_SIZE
@@ -62,11 +64,16 @@ int	check_valid_path(t_game *game);
 void	find_player(t_game *game, char **map);
 void	floodfill(char **map, int x, int y);
 int	is_path_reachable(char **map, int lines, int width);
-int	handle_movements(int keycode, t_game *game);
+int	handle_keypress(int keycode, t_game *game);
 void	display_map(t_game *game);
 void	move_up_down(int keycode, t_game *game);
 void	move_right_left(int keycode, t_game *game);
 int	collectibles_counter(t_game *game);
+void	free_allocated(t_game *game);
+int	handle_closing(t_game *game);
+void	ft_putchar(char c);
+void	print_moves(int nbr);
+void	ft_putnbr(int n);
 
 #define BUFFER_SIZE_2 10000
 # ifndef FD_SIZE
