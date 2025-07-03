@@ -28,3 +28,19 @@ void	display_map(t_game *game)
 		i++;
 	}
 }
+
+void	free_allocated(t_game *game)
+{
+	int i;
+
+	i  = 0;
+	if (game && game->map)
+	{
+		while (i < game->lines)
+		{
+			free(game->map[i]);
+			i++;
+		}
+		free(game->map);
+	}
+}

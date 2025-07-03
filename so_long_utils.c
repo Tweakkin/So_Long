@@ -39,18 +39,7 @@ void	ft_putstr(char *s)
 
 void exit_error(t_game *game, char *msg)
 {
-	int	i;
-
-	i = 0;
-	if (game && game->map)
-	{
-		while (i < game->lines)
-		{
-			free(game->map[i]);
-			i++;
-		}
-		free(game->map);
-	}
+	free_allocated(game);
 	ft_putstr(msg);
 	exit(1);
 }
