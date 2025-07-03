@@ -9,7 +9,21 @@ void	mlx_start_game(t_game *game)
 	game->img_player = mlx_xpm_file_to_image(game->mlx, "./sprites/player.xpm", &game->img_width, &game->img_height);
 	if (!game->img_player)
    	 exit_error(game, "Error: failed to load player image");
-	mlx_put_image_to_window(game->mlx, game->mlx_window, game->img_player, 3, 5);
+	game->img_wall = mlx_xpm_file_to_image(game->mlx, "./sprites/temp_wall.xpm", &game->img_width, &game->img_height);
+	if (!game->img_wall)
+   		exit_error(game, "Error: failed to load map image");
+	game->img_limits = mlx_xpm_file_to_image(game->mlx, "./sprites/limits.xpm", &game->img_width, &game->img_height);
+	if (!game->img_limits)
+   		exit_error(game, "Error: failed to load map limits image");
+	game->img_collectibles = mlx_xpm_file_to_image(game->mlx, "./sprites/collectibles.xpm", &game->img_width, &game->img_height);
+	if (!game->img_collectibles)
+   		exit_error(game, "Error: failed to load collectibles image");
+	game->img_exit = mlx_xpm_file_to_image(game->mlx, "./sprites/exit.xpm", &game->img_width, &game->img_height);
+	if (!game->img_exit)
+   		exit_error(game, "Error: failed to load exit image");
+	display_map(game);
+	mlx_key_hook(game->mlx_window, handle_movements, game);
+	//wdisplay_map(game);
 	mlx_loop(game->mlx);
 }
 
@@ -19,6 +33,9 @@ void	init_game_data(t_game *game, char *filepath)
 	game->map = allocate_fill_map(filepath);
 	game->lines = count_lines(filepath);
 	game->width = count_width(game->map);
+	game->collectibles_count = 0;
+	game->collectibles_num = collectibles_counter(game);
+	printf("%d\n", game->collectibles_num);
 }
 
 int main(int argc, char **argv)

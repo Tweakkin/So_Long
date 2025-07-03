@@ -18,8 +18,14 @@ typedef struct s_game
 	void *mlx;
 	void *mlx_window;
 	void *img_player;
+	void *img_limits;
+	void *img_collectibles;
+	void *img_exit;
+	void *img_wall;
 	int img_width;
 	int img_height;
+	int collectibles_count;
+	int collectibles_num;
 }t_game;
 
 # ifndef BUFFER_SIZE
@@ -56,6 +62,11 @@ int	check_valid_path(t_game *game);
 void	find_player(t_game *game, char **map);
 void	floodfill(char **map, int x, int y);
 int	is_path_reachable(char **map, int lines, int width);
+int	handle_movements(int keycode, t_game *game);
+void	display_map(t_game *game);
+void	move_up_down(int keycode, t_game *game);
+void	move_right_left(int keycode, t_game *game);
+int	collectibles_counter(t_game *game);
 
 #define BUFFER_SIZE_2 10000
 # ifndef FD_SIZE
