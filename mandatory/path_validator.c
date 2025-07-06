@@ -4,7 +4,7 @@ int	check_valid_path(t_game *game)
 {
 	char **temp_map;
 
-	temp_map = copy_map(game->map, game->lines, game->width);
+	temp_map = copy_map(game);
 	if (!temp_map)
 		exit_error(game, "Error: failed to copy map\n");
 	find_player(game, temp_map);
@@ -22,19 +22,22 @@ int	check_valid_path(t_game *game)
 	}
 }
 
-char **copy_map(char **src, int lines, int width)
+char **copy_map(t_game *game)
 {
 	char **dst;
 	int i;
 
 	i = 0;
-	dst = malloc(sizeof(char *) * (lines + 1));
+	dst = malloc(sizeof(char *) * (game->lines + 1));
 	if (!dst)
-		return NULL;
-	while (i < lines)
 	{
-		dst[i] = malloc(sizeof(char) * (width + 1));
-		ft_strcpy(dst[i], src[i]);
+		free_allocated(game);
+		return NULL;
+	}
+	while (i < game->lines)
+	{
+		dst[i] = malloc(sizeof(char) * (game->width + 1));
+		ft_strcpy(dst[i], game->map[i]);
 		i++;
 	}
 	return (dst);

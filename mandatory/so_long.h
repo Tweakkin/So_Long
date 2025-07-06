@@ -59,7 +59,7 @@ void	init_game_data(t_game *game, char *filepath);
 void	ft_putstr(char *s);
 void exit_error(t_game *game, char *msg);
 char	*ft_strcpy(char *dest, const char *src);
-char **copy_map(char **src, int lines, int width);
+char **copy_map(t_game *game);
 int	check_valid_path(t_game *game);
 void	find_player(t_game *game, char **map);
 void	floodfill(char **map, int x, int y);
