@@ -1,7 +1,7 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-#include "mlx.h"
+#include "minilibx-linux/mlx.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
