@@ -1,42 +1,46 @@
 #include "so_long.h"
 
-void	display_map(t_game *game, int keycode)
+void	display_map(t_game *game)
 {
-    int x;
-	int y;
-    void *img;
+	int		x;
+	int		y;
+	void	*img;
 
-    y = 0;
-    while (y < game->lines)
-    {
-        x = 0;
-        while (x < game->width)
-        {
-            if (game->map[y][x] == '0')
-                img = game->img_wall;
-            else if (game->map[y][x] == '1')
-                img = game->img_limits;
-            else if (game->map[y][x] == 'C')
-                img = game->img_collectibles;
-            else if (game->map[y][x] == 'E' && game->collectibles_num > game->collected)
-                img = game->img_closed_exit;
-            else if (game->map[y][x] == 'E' && game->collectibles_num == game->collected)
-                img = game->img_opened_exit;
-			else if (game->map[y][x] == 'P' && keycode == 100)
-                img = game->img_player_right;
-			else if (game->map[y][x] == 'P' && keycode == 97)
-                img = game->img_player_left;
-            else if (game->map[y][x] == 'P')
-                img = game->img_player;
+	y = 0;
+	while (y < game->lines)
+	{
+		x = 0;
+		while (x < game->width)
+		{
+			if (game->map[y][x] == '0')
+				img = game->img_wall;
+			else if (game->map[y][x] == '1')
+				img = game->img_limits;
+			else if (game->map[y][x] == 'C')
+				img = game->img_collectibles;
+			else if (game->map[y][x] == 'E' && game->collectibles_num > game->collected)
+				img = game->img_closed_exit;
+			else if (game->map[y][x] == 'E' && game->collectibles_num == game->collected)
+				img = game->img_opened_exit;
+			else if (game->map[y][x] == 'P')
+			{
+				if (game->player_dir == 'R')
+					img = game->img_player_right;
+				else if (game->player_dir == 'L')
+					img = game->img_player_left;
+				else if (game->player_dir == 'U')
+					img = game->img_player;
+				else
+					img = game->img_player;
+			}
 			else if (game->map[y][x] == 'X')
 				img = game->img_enemy;
-            else
-                img = game->img_limits;
-            mlx_put_image_to_window(game->mlx, game->mlx_window, img, x * 62, y * 62);
-            x++;
-        }
-        y++;
-    }
+
+			mlx_put_image_to_window(game->mlx, game->mlx_window, img, x * 64, y * 64);
+			x++;
+		}
+		y++;
+	}
 }
 
 void	free_allocated(t_game *game)
@@ -78,4 +82,38 @@ int	check_enemy(char **map, int lines)
 		return (0);
 	else
 		return (1);
+}
+
+int game_loop(t_game *game)
+{
+	game->frame++;
+	if (game->frame % 60 == 0)
+		enemy_invisible(game);
+	display_map(game);
+	usleep(10000);
+	return (0);
+}
+
+void	enemy_invisible(t_game *game)
+{
+	int i;
+	int j;
+	
+	i = 0;
+	while (i < game->lines)
+	{
+		j = 0;
+		while (j < game->width)
+		{
+			if (game->map[i][j] == 'X' && !game->enemy_visiblity)
+				game->map[i][j] = '0';
+			else if (game->enemy_map[i][j] == 'X' && game->enemy_visiblity)
+			{
+				game->map[i][j] = 'X';
+			}
+			j++;
+		}
+		i++;
+	}
+	game->enemy_visiblity = !game->enemy_visiblity;
 }

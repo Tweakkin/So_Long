@@ -32,6 +32,10 @@ typedef struct s_game
 	int collected;
 	int collectibles_num;
 	int moves_counter;
+	int frame;
+	int enemy_visiblity;
+	char **enemy_map;
+	char player_dir;
 }t_game;
 
 # ifndef BUFFER_SIZE
@@ -69,7 +73,7 @@ void	find_player(t_game *game, char **map);
 void	floodfill(char **map, int x, int y);
 int	is_path_reachable(char **map, int lines, int width);
 int	handle_keypress(int keycode, t_game *game);
-void	display_map(t_game *game, int keycode);
+void	display_map(t_game *game);
 void	move_up_down(int keycode, t_game *game);
 void	move_right_left(int keycode, t_game *game);
 int	collectibles_counter(t_game *game);
@@ -79,6 +83,8 @@ void	ft_putchar(char c);
 void	print_moves(int nbr);
 void	ft_putnbr(int n);
 int	check_enemy(char **map, int lines);
+void	enemy_invisible(t_game *game);
+int game_loop(t_game *game);
 
 #define BUFFER_SIZE_2 10000
 # ifndef FD_SIZE

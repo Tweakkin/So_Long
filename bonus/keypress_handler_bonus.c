@@ -3,14 +3,30 @@
 int	handle_keypress(int keycode, t_game *game)
 {
 	find_player(game, game->map);
-	if (keycode == 	119 || keycode == 115)
+	if (keycode == 119)
+	{
 		move_up_down(keycode, game);
-	if (keycode == 100 || keycode == 97)
+		game->player_dir = 'U';
+	}
+	else if (keycode == 115)
+	{
+		move_up_down(keycode, game);
+		game->player_dir = 'D';
+	}
+	else if (keycode == 100)
+	{
 		move_right_left(keycode, game);
-	if (keycode == 65307)
+		game->player_dir = 'R';
+	}
+	else if (keycode == 97)
+	{
+		move_right_left(keycode, game);
+		game->player_dir = 'L';
+	}
+	else if (keycode == 65307)
 		handle_closing(game);
-	mlx_clear_window(game->mlx, game->mlx_window);
-	display_map(game, keycode);
+	//mlx_clear_window(game->mlx, game->mlx_window);
+	display_map(game);
 	return (0);
 }
 
