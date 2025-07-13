@@ -2,8 +2,8 @@
 
 void	display_map(t_game *game)
 {
-    int x,;
-	int j;
+    int x;
+	int y;
     void *img;
 
     y = 0;
@@ -24,7 +24,7 @@ void	display_map(t_game *game)
                 img = game->img_player;
             else
                 img = game->img_limits;
-            mlx_put_image_to_window(game->mlx, game->mlx_window, img, x * 64, y * 64);
+            mlx_put_image_to_window(game->mlx, game->mlx_window, img, x * 32, y * 32);
             x++;
         }
         y++;
