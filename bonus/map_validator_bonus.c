@@ -71,10 +71,12 @@ void check_map_elements(t_game *game, char **map, int lines)
 {
 	if (check_player(map, lines) == 0)
 		exit_error(game, "Error: map must contain exactly one player (P)");
-	else if (check_exit(map, lines) == 0)
+	if (check_exit(map, lines) == 0)
 		exit_error(game, "Error: map must contain exactly one exit (E)");
-	else if (check_collectibles(map, lines) == 0)
+	if (check_collectibles(map, lines) == 0)
 		exit_error(game, "Error: map must contain at least one collectible (C)");
+	if (check_enemy(map, lines) == 0)
+		exit_error(game, "Error: map must contain at least one enemy (E)");
 }
 
 int check_invalid_char(char **map, int lines)
@@ -88,7 +90,7 @@ int check_invalid_char(char **map, int lines)
 		j = 0;
 		while (map[i][j] != '\n' && map[i][j] != '\0' && map[i][j] != '\r')
 		{
-			if (map[i][j] != 'E' && map[i][j] != 'C' && map[i][j] != '1' && map[i][j] != 'P' && map[i][j] != '0')
+			if (map[i][j] != 'E' && map[i][j] != 'C' && map[i][j] != '1' && map[i][j] != 'P' && map[i][j] != '0' && map[i][j] != 'X')
 				return (0);
 			j++;
 		}

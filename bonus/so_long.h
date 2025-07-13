@@ -1,7 +1,7 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-#include "minilibx-linux/mlx.h"
+#include "mlx.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -19,9 +19,13 @@ typedef struct s_game
 	void *mlx;
 	void *mlx_window;
 	void *img_player;
+	void *img_player_right;
+	void *img_player_left;
 	void *img_limits;
 	void *img_collectibles;
-	void *img_exit;
+	void *img_closed_exit;
+	void *img_opened_exit;
+	void *img_enemy;
 	void *img_wall;
 	int img_width;
 	int img_height;
@@ -65,7 +69,7 @@ void	find_player(t_game *game, char **map);
 void	floodfill(char **map, int x, int y);
 int	is_path_reachable(char **map, int lines, int width);
 int	handle_keypress(int keycode, t_game *game);
-void	display_map(t_game *game);
+void	display_map(t_game *game, int keycode);
 void	move_up_down(int keycode, t_game *game);
 void	move_right_left(int keycode, t_game *game);
 int	collectibles_counter(t_game *game);
@@ -74,6 +78,7 @@ int	handle_closing(t_game *game);
 void	ft_putchar(char c);
 void	print_moves(int nbr);
 void	ft_putnbr(int n);
+int	check_enemy(char **map, int lines);
 
 #define BUFFER_SIZE_2 10000
 # ifndef FD_SIZE

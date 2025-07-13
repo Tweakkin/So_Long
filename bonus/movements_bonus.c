@@ -22,6 +22,8 @@ void	move_right_left(int keycode, t_game *game)
 		game->map[game->y_player][game->x_player] = '0';
 		handle_closing(game);
 	}
+	else if (game->map[game->y_player][game->x_player + offset] == 'X')
+        handle_closing(game);
 }
 
 void	move_up_down(int keycode, t_game *game)
@@ -46,4 +48,6 @@ void	move_up_down(int keycode, t_game *game)
 		game->map[game->y_player][game->x_player] = '0';
 		handle_closing(game);
 	}
+	else if (game->map[game->y_player][game->x_player + offset] == 'X')
+        handle_closing(game);
 }
