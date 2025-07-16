@@ -5,8 +5,6 @@ void	move_right_left(int keycode, t_game *game)
 	int offset;
 
 	offset = 1;
-	game->moves_counter++;
-	print_moves(game->moves_counter);
 	if (keycode == 97)
 		offset = -1;
 	if (game->map[game->y_player][game->x_player + offset] == 'C')
@@ -15,11 +13,15 @@ void	move_right_left(int keycode, t_game *game)
 	{
 		game->map[game->y_player][game->x_player + offset] = 'P';
 		game->map[game->y_player][game->x_player] = '0';
+		game->moves_counter++;
+		//print_moves(game);
 	}
 	else if (game->map[game->y_player][game->x_player + offset] == 'E' && game->collected == game->collectibles_num)
 	{
 		game->map[game->y_player][game->x_player + offset] = 'P';
 		game->map[game->y_player][game->x_player] = '0';
+		game->moves_counter++;
+		//print_moves(game);
 		handle_closing(game);
 	}
 	else if (game->map[game->y_player][game->x_player + offset] == 'X')
@@ -31,8 +33,6 @@ void	move_up_down(int keycode, t_game *game)
 	int offset;
 
 	offset = 1;
-	game->moves_counter++;
-	print_moves(game->moves_counter);
 	if (keycode == 119)
 		offset = -1;
 	if (game->map[game->y_player + offset][game->x_player] == 'C')
@@ -41,11 +41,15 @@ void	move_up_down(int keycode, t_game *game)
 	{
 		game->map[game->y_player + offset][game->x_player] = 'P';
 		game->map[game->y_player][game->x_player] = '0';
+		game->moves_counter++;
+		//print_moves(game);
 	}
 	else if (game->map[game->y_player + offset][game->x_player] == 'E' && game->collected == game->collectibles_num)
 	{
 		game->map[game->y_player + offset][game->x_player] = 'P';
 		game->map[game->y_player][game->x_player] = '0';
+		game->moves_counter++;
+		//print_moves(game);
 		handle_closing(game);
 	}
 	else if (game->map[game->y_player][game->x_player + offset] == 'X')

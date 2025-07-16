@@ -18,7 +18,7 @@ void	mlx_start_game(t_game *game)
 	game->img_wall = mlx_xpm_file_to_image(game->mlx, "./sprites/snow.xpm", &game->img_width, &game->img_height);
 	if (!game->img_wall)
    		exit_error(game, "Error: failed to load map image");
-	game->img_limits = mlx_xpm_file_to_image(game->mlx, "./sprites/tree.xpm", &game->img_width, &game->img_height);
+	game->img_limits = mlx_xpm_file_to_image(game->mlx, "./sprites/wall.xpm", &game->img_width, &game->img_height);
 	if (!game->img_limits)
    		exit_error(game, "Error: failed to load map limits image");
 	game->img_collectibles = mlx_xpm_file_to_image(game->mlx, "./sprites/gift.xpm", &game->img_width, &game->img_height);
@@ -52,6 +52,7 @@ void	init_game_data(t_game *game, char *filepath)
 	game->moves_counter = 0;
 	game->frame = 0;
 	game->enemy_visiblity = 0;
+	game->last_move = 0;
 }
 
 int main(int argc, char **argv)

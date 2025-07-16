@@ -87,9 +87,11 @@ int	check_enemy(char **map, int lines)
 int game_loop(t_game *game)
 {
 	game->frame++;
+	print_moves(game);
 	if (game->frame % 60 == 0)
 		enemy_invisible(game);
 	display_map(game);
+	print_moves(game);
 	usleep(10000);
 	return (0);
 }

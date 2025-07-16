@@ -25,7 +25,6 @@ int	handle_keypress(int keycode, t_game *game)
 	}
 	else if (keycode == 65307)
 		handle_closing(game);
-	//mlx_clear_window(game->mlx, game->mlx_window);
 	display_map(game);
 	return (0);
 }

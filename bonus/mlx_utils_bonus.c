@@ -1,9 +1,17 @@
 #include "so_long.h"
 
-void	print_moves(int nbr)
+void	print_moves(t_game *game)
 {
-	ft_putnbr(nbr);
-	write(1, "\n", 1);
+	char *moves_str;
+
+    moves_str = ft_itoa(game->moves_counter);
+	mlx_set_font(game->mlx, game->mlx_window, "rk24");
+	//mlx_do_sync(game->mlx);
+	//mlx_string_put(game->mlx, game->mlx_window, 100, 100, 0x000000, "               ");
+    mlx_string_put(game->mlx, game->mlx_window, 100, 100, 0x000000, moves_str);
+	mlx_do_sync(game->mlx);
+	game->last_move = game->moves_counter;
+    free(moves_str);
 }
 
 void	ft_putnbr(int n)

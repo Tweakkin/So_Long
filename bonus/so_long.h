@@ -36,6 +36,7 @@ typedef struct s_game
 	int enemy_visiblity;
 	char **enemy_map;
 	char player_dir;
+	int last_move;
 }t_game;
 
 # ifndef BUFFER_SIZE
@@ -80,11 +81,12 @@ int	collectibles_counter(t_game *game);
 void	free_allocated(t_game *game);
 int	handle_closing(t_game *game);
 void	ft_putchar(char c);
-void	print_moves(int nbr);
+void	print_moves(t_game *game);
 void	ft_putnbr(int n);
 int	check_enemy(char **map, int lines);
 void	enemy_invisible(t_game *game);
 int game_loop(t_game *game);
+char	*ft_itoa(int n);
 
 #define BUFFER_SIZE_2 10000
 # ifndef FD_SIZE

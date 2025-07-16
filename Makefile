@@ -8,7 +8,7 @@ M_SRCS =  ./mandatory/get_next_line_utils.c ./mandatory/get_next_line.c ./mandat
 B_SRCS = ./bonus/get_next_line_utils_bonus.c ./bonus/get_next_line_bonus.c ./bonus/keypress_handler_bonus.c ./bonus/render_map_bonus.c \
 		./bonus/map_parser_bonus.c ./bonus/map_validator_utils_bonus.c ./bonus/map_validator_bonus.c ./bonus/mlx_utils_bonus.c \
 			./bonus/movements_utils_bonus.c ./bonus/movements_bonus.c ./bonus/path_validator_bonus.c \
-				./bonus/so_long_utils_bonus.c ./bonus/so_long_bonus.c
+				./bonus/so_long_utils_bonus.c ./bonus/so_long_bonus.c ./bonus/ft_itoa_bonus.c
 M_OBJS = $(M_SRCS:.c=.o)
 B_OBJS = $(B_SRCS:.c=.o)
 NAME = so_long
