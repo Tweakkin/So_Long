@@ -6,19 +6,19 @@ void	mlx_start_game(t_game *game)
 	game->mlx_window = mlx_new_window(game->mlx, game->width * 64, game->lines * 64, "so_long");
 	if (!game->mlx_window)
 		exit_error(game, "Error: The window failed to create");
-	game->img_player = mlx_xpm_file_to_image(game->mlx, "./sprites/player.xpm", &game->img_width, &game->img_height);
+	game->img_player = mlx_xpm_file_to_image(game->mlx, "./sprites/santa_standing.xpm", &game->img_width, &game->img_height);
 	if (!game->img_player)
    	 exit_error(game, "Error: failed to load player image");
-	game->img_wall = mlx_xpm_file_to_image(game->mlx, "./sprites/temp_wall.xpm", &game->img_width, &game->img_height);
+	game->img_wall = mlx_xpm_file_to_image(game->mlx, "./sprites/snow.xpm", &game->img_width, &game->img_height);
 	if (!game->img_wall)
    		exit_error(game, "Error: failed to load map image");
-	game->img_limits = mlx_xpm_file_to_image(game->mlx, "./sprites/limits.xpm", &game->img_width, &game->img_height);
+	game->img_limits = mlx_xpm_file_to_image(game->mlx, "./sprites/wall2.xpm", &game->img_width, &game->img_height);
 	if (!game->img_limits)
    		exit_error(game, "Error: failed to load map limits image");
-	game->img_collectibles = mlx_xpm_file_to_image(game->mlx, "./sprites/collectibles.xpm", &game->img_width, &game->img_height);
+	game->img_collectibles = mlx_xpm_file_to_image(game->mlx, "./sprites/gift.xpm", &game->img_width, &game->img_height);
 	if (!game->img_collectibles)
    		exit_error(game, "Error: failed to load collectibles image");
-	game->img_exit = mlx_xpm_file_to_image(game->mlx, "./sprites/exit.xpm", &game->img_width, &game->img_height);
+	game->img_exit = mlx_xpm_file_to_image(game->mlx, "./sprites/closed_door.xpm", &game->img_width, &game->img_height);
 	if (!game->img_exit)
    		exit_error(game, "Error: failed to load exit image");
 	display_map(game);
