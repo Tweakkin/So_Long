@@ -4,6 +4,11 @@ Welcome to **so_long**, a simple 2D graphical game written in C, using the MiniL
 
 ---
 
+### 🎬 Gameplay Overview
+<img src="Gameplay_overview/so_long_gif.gif" alt="Gameplay Demo" width="700">
+
+---
+
 ## 🎮 Game Overview
 
 Your mission is to control a character through a small 2D map, collect all the collectibles (`C`), and reach the exit (`E`) without running into enemies (bonus).
@@ -14,10 +19,6 @@ Your mission is to control a character through a small 2D map, collect all the c
 > - Or you're caught by an enemy (bonus) ☠️
 
 ---
-
-## 📸 Screenshots
-
-> *(Optional: Replace with your own screenshots)*
 
 **Legend**:  
 - `1` - Wall 🧱  
