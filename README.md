@@ -46,4 +46,4 @@ Make sure you have **MiniLibX** and dependencies set up.
 ```bash
 git clone https://github.com/Tweakkin/So_long.git
 cd So_long
-make
+make bonus
